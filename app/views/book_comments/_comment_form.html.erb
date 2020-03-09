@@ -1,0 +1,8 @@
+<%= form_with(model: book_comment) do |c| %>
+	<!--コントローラにhiddenで見えないようにして送信-->
+	<%= c.hidden_field :user_id, :value => current_user.id %>
+	<%= c.hidden_field :book_id, :value => book.id %>
+	<!--入力欄-->
+	<%= c.text_area :body, id: "textarea2", class: "comment-text-area" %>
+	<%= c.submit "送信" %>
+<% end %>

@@ -1,0 +1,64 @@
+
+<div class="row">
+	<div class="col-xs-3">
+
+		<h2>User info</h2>
+		<%= render 'users/profile', user: @user %>
+
+		<h2>New book</h2>
+		<%= render 'books/newform', book: @book_new %>
+
+	</div>
+
+	<div class="col-xs-9">
+		<h2>Book detail</h2>
+
+		<table class="table">
+			<% if @book.user_id == current_user.id%>
+
+
+			<!--favoriteすると、editとdestroyは tr内で置き換わって消える-->
+				
+						<tr id="book-index-ajax-<%= @book.id %>">
+							<%= render partial: "books/book_row", locals: {book: @book,call: @call} %>
+						</tr>
+					
+
+			<!--他人のユーザーshow-->
+			<% else %>
+					<tr id="book-index-ajax-<%= @book.id %>">
+						<%= render partial: "books/book_row", locals: {book: @book, call: @call} %>
+					</tr>
+			<% end %>
+
+		</table>
+
+		<!--Ajaxでコメント一覧呼び出し-->
+		<div id="comment_area_id">
+			<%= render partial: "book_comments/comment_all", locals: {book_comments: @book_comments, users: @users, book: @book } %>
+		</div>
+
+
+		<% if @book_comment.errors.any? %>
+		<div id="error_explanation">
+			<h2><%= pluralize(@book_comment.errors.count, "error") %> prohibited this book from being saved:</h2>
+
+			<ul>
+				<% @book_comment.errors.full_messages.each do |message| %>
+				<li><%= message %></li>
+				<% end %>
+			</ul>
+		</div>
+		<% end %>
+
+
+
+
+		<!--Ajaxでコメント入力欄呼び出し-->
+		<% if user_signed_in? %>
+			<%= render partial: "book_comments/comment_form", locals: {book_comment: @book_comment, book: @book} %>
+		<% end %>
+
+	</div>
+</div>
+
